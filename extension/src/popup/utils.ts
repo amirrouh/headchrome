@@ -1,0 +1,115 @@
+/**
+ * Escapes HTML special characters to prevent XSS when inserting user content.
+ */
+export function escapeHTML(str: string): string {
+  const div = document.createElement("div");
+  div.appendChild(document.createTextNode(str));
+  return div.innerHTML;
+}
+
+/**
+ * Copies text to the clipboard using the Clipboard API.
+ */
+export async function copyToClipboard(text: string): Promise<void> {
+  try {
+    await navigator.clipboard.writeText(text);
+  } catch {
+    // Fallback for contexts where clipboard API is unavailable
+    const textarea = document.createElement("textarea");
+    textarea.value = text;
+    textarea.style.position = "fixed";
+    textarea.style.left = "-9999px";
+    document.body.appendChild(textarea);
+    textarea.select();
+    document.execCommand("copy");
+    document.body.removeChild(textarea);
+  }
+}
+
+/**
+ * Shows a transient toast notification at the bottom of the popup.
+ */
+export function showToast(message: string, level: "info" | "error" = "info"): void {
+  // Remove any existing toast
+  const existing = document.querySelector(".toast");
+  if (existing) {
+    existing.remove();
+  }
+
+  const toast = document.createElement("div");
+  toast.className = "toast" + (level === "error" ? " toast-error" : "");
+  toast.textContent = message;
+  document.body.appendChild(toast);
+
+  // Remove after animation completes
+  setTimeout(() => {
+    toast.remove();
+  }, 2500);
+}
+
+/**
+ * Creates a copy button (small clipboard icon) that copies the given text.
+ */
+export function createCopyButton(textToCopy: string): HTMLElement {
+  const btn = document.createElement("button");
+  btn.className = "copy-btn";
+  btn.title = "Copy to clipboard";
+  btn.setAttribute("aria-label", "Copy to clipboard");
+
+  // Clipboard icon using SVG (via DOM API, no innerHTML)
+  const ns = "http://www.w3.org/2000/svg";
+  const svg = document.createElementNS(ns, "svg");
+  svg.setAttribute("viewBox", "0 0 16 16");
+  svg.setAttribute("fill", "none");
+  svg.setAttribute("stroke", "currentColor");
+  svg.setAttribute("stroke-width", "1.5");
+  svg.setAttribute("stroke-linecap", "round");
+  svg.setAttribute("stroke-linejoin", "round");
+
+  // Outer clipboard rectangle
+  const rect1 = document.createElementNS(ns, "rect");
+  rect1.setAttribute("x", "5");
+  rect1.setAttribute("y", "5");
+  rect1.setAttribute("width", "8");
+  rect1.setAttribute("height", "9");
+  rect1.setAttribute("rx", "1.5");
+
+  // Back rectangle (the copy source)
+  const rect2 = document.createElementNS(ns, "rect");
+  rect2.setAttribute("x", "3");
+  rect2.setAttribute("y", "2");
+  rect2.setAttribute("width", "8");
+  rect2.setAttribute("height", "9");
+  rect2.setAttribute("rx", "1.5");
+
+  svg.appendChild(rect2);
+  svg.appendChild(rect1);
+  btn.appendChild(svg);
+
+  btn.addEventListener("click", (e) => {
+    e.stopPropagation();
+    copyToClipboard(textToCopy);
+    btn.classList.add("copied");
+    showToast("Copied " + textToCopy);
+    setTimeout(() => {
+      btn.classList.remove("copied");
+    }, 1500);
+  });
+
+  return btn;
+}
+
+/**
+ * Detects the user's platform for platform-specific instructions.
+ */
+export function detectPlatform(): "macos" | "linux" | "windows" | "unknown" {
+  // Try modern API first
+  const uaData = (navigator as unknown as { userAgentData?: { platform?: string } }).userAgentData;
+  const platform = uaData?.platform ?? navigator.platform ?? "";
+  const lower = platform.toLowerCase();
+
+  if (lower.includes("mac")) return "macos";
+  if (lower.includes("win")) return "windows";
+  if (lower.includes("linux")) return "linux";
+  return "unknown";
+}
