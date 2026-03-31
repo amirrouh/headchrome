@@ -10,14 +10,11 @@ import {
   CGNAT_MASK,
 } from "@tailchrome/shared/background/proxy-utils";
 
-/**
- * Firefox proxy manager using the browser.proxy.onRequest API.
- *
- * Unlike Chrome's PAC script approach, Firefox uses a listener-based model
- * where each request triggers a callback that returns proxy info.
- */
+// ---------------------------------------------------------------------------
+// Types
+// ---------------------------------------------------------------------------
 
-interface FirefoxProxyInfo {
+export interface FirefoxProxyInfo {
   type: "socks" | "direct";
   host?: string;
   port?: number;

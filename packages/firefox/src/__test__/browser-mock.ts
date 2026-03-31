@@ -37,6 +37,7 @@ const browserMock = {
   },
   alarms: {
     create: (_name: string, _info: { periodInMinutes: number }) => {},
+    clear: async (_name: string) => true,
     onAlarm: {
       addListener: (_fn: (alarm: { name: string }) => void) => {},
     },

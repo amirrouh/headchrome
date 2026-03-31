@@ -13,7 +13,7 @@ describe("FirefoxProxyManager", () => {
   });
 
   describe("apply / clear", () => {
-    it("registers listener when state is running and proxy enabled", () => {
+    it("sets config when state is running and proxy enabled", () => {
       pm.apply(baseState());
       const browserProxy = (globalThis as any).browser.proxy.onRequest;
       expect(browserProxy.hasListener(pm.listener)).toBe(true);

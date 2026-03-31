@@ -9,6 +9,7 @@ import { KEEPALIVE_INTERVAL_MS, ADMIN_URL, TAILSCALE_SERVICE_IP } from "../const
 import { StateStore } from "./state-store";
 import { NativeHostConnection } from "./native-host";
 import { BadgeManager } from "./badge-manager";
+import { DefaultTimerService, type TimerService } from "./timer-service";
 
 export type { ProxyManager };
 
@@ -25,6 +26,8 @@ export interface BackgroundHandle {
 }
 
 export interface InitBackgroundOptions {
+  /** Custom timer implementation (e.g. for reconnect backoff). Defaults to setTimeout/setInterval. */
+  timerService?: TimerService;
   /** Skip the built-in setInterval keepalive (e.g. when the caller uses browser.alarms instead). */
   skipKeepalive?: boolean;
 }
@@ -49,15 +52,12 @@ function isValidLoginURL(url: string): boolean {
   }
 }
 
-// ---------------------------------------------------------------------------
-// Main initialization
-// ---------------------------------------------------------------------------
-
 export function initBackground(
   proxyManager: ProxyManager,
   nativeHostId: string,
   options?: InitBackgroundOptions,
 ): BackgroundHandle {
+  const timerService = options?.timerService ?? new DefaultTimerService();
   const store = new StateStore();
   const badgeManager = new BadgeManager();
 
@@ -238,7 +238,8 @@ export function initBackground(
   const nativeHost = new NativeHostConnection(
     nativeHostId,
     handleNativeMessage,
-    handleNativeStateChange
+    handleNativeStateChange,
+    timerService,
   );
 
   // Start the connection
@@ -404,7 +405,7 @@ export function initBackground(
   // ---------------------------------------------------------------------------
 
   if (!options?.skipKeepalive) {
-    setInterval(() => {
+    timerService.setInterval("keepalive", () => {
       if (store.getState().hostConnected) {
         nativeHost.send({ cmd: "ping" });
       }
