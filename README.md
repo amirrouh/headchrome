@@ -1,8 +1,14 @@
-# HeadChrome
+<p align="center">
+  <img src="logo.png" alt="HeadChrome logo" width="120">
+</p>
 
-Access your self-hosted [Headscale](https://github.com/juanfont/headscale) network directly from your browser. No system VPN required.
+<h1 align="center">HeadChrome</h1>
 
-HeadChrome runs a dedicated node per browser profile, without touching system networking. Network traffic is routed through a local SOCKS5/HTTP proxy, so it works alongside (or without) a system-level Tailscale/Headscale client.
+<p align="center">
+  Access your self-hosted <a href="https://github.com/juanfont/headscale">Headscale</a> network directly from your browser. No system VPN required.
+</p>
+
+HeadChrome runs a dedicated node per browser profile, without touching system networking. Network traffic is routed through a local SOCKS5/HTTP proxy, so it works alongside (or without) a system-level Headscale client.
 
 ## Features
 
@@ -30,7 +36,7 @@ HeadChrome runs a dedicated node per browser profile, without touching system ne
 The extension has two parts:
 
 - A **browser extension** (Manifest V3, Chrome and Firefox) that manages proxy configuration and provides the popup UI
-- A **native host** (Go, using [`tsnet`](https://pkg.go.dev/tailscale.com/tsnet)) that runs the actual node and exposes a local proxy
+- A **native host** (Go) that runs the actual node and exposes a local proxy
 
 They communicate over the browser's native messaging protocol. Your Headscale server URL is stored locally in the browser and passed to the native host on startup.
 
