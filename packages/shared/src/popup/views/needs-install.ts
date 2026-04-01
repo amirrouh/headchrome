@@ -24,7 +24,7 @@ export function renderNeedsInstall(root: HTMLElement): void {
   const description = document.createElement("p");
   description.className = "centered-view-text";
   description.textContent =
-    "Tailscale needs a helper program to connect your browser to your tailnet.";
+    "HeadChrome needs a helper program to connect your browser to your Headscale network.";
 
   content.appendChild(icon);
   content.appendChild(title);
@@ -82,7 +82,7 @@ export function renderNeedsInstall(root: HTMLElement): void {
 }
 
 const RELEASE_BASE =
-  "https://github.com/dantraynor/tailchrome/releases/latest/download";
+  "https://github.com/amirrouh/headchrome/releases/latest/download";
 
 /**
  * Returns the filename of the native host binary for the detected platform.
@@ -91,14 +91,14 @@ function binaryFilename(
   platform: "macos" | "linux" | "windows" | "unknown",
 ): string | null {
   if (platform === "windows") {
-    return "tailscale-browser-ext-windows-amd64.exe";
+    return "headchrome-host-windows-amd64.exe";
   }
   if (platform === "linux") {
-    return "tailscale-browser-ext-linux-amd64";
+    return "headchrome-host-linux-amd64";
   }
   if (platform === "macos") {
     const arch = detectArch();
-    return `tailscale-browser-ext-darwin-${arch}`;
+    return `headchrome-host-darwin-${arch}`;
   }
   return null;
 }
@@ -114,7 +114,7 @@ function buildDownloadURL(
   if (filename) {
     return `${RELEASE_BASE}/${filename}`;
   }
-  return "https://github.com/dantraynor/tailchrome/releases/latest";
+  return "https://github.com/amirrouh/headchrome/releases/latest";
 }
 
 /**

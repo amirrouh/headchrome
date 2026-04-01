@@ -1,4 +1,4 @@
-import { initBackground } from "@tailchrome/shared/background/background";
+import { initBackground } from "@headchrome/shared/background/background";
 import { CHROME_NATIVE_HOST_ID } from "../constants";
 import { ChromeProxyManager } from "./chrome-proxy-manager";
 

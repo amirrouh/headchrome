@@ -10,17 +10,17 @@ import (
 
 func chromeManifestDir() string {
 	appData := os.Getenv("LOCALAPPDATA")
-	return filepath.Join(appData, "Tailscale", "BrowserExt")
+	return filepath.Join(appData, "HeadChrome", "BrowserExt")
 }
 
 func firefoxManifestDir() string {
 	appData := os.Getenv("LOCALAPPDATA")
-	return filepath.Join(appData, "Tailscale", "BrowserExt")
+	return filepath.Join(appData, "HeadChrome", "BrowserExt")
 }
 
 func binaryInstallDir() string {
 	appData := os.Getenv("LOCALAPPDATA")
-	return filepath.Join(appData, "Tailscale", "BrowserExt")
+	return filepath.Join(appData, "HeadChrome", "BrowserExt")
 }
 
 // platformPostInstallChrome creates the Windows registry key for Chrome after

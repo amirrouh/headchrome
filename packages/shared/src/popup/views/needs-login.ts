@@ -24,12 +24,12 @@ export function renderNeedsLogin(root: HTMLElement, state: TailscaleState): void
 
   const title = document.createElement("h2");
   title.className = "centered-view-title";
-  title.textContent = "Log in to Tailscale";
+  title.textContent = "Log in to Headscale";
 
   const description = document.createElement("p");
   description.className = "centered-view-text";
   description.textContent =
-    "You need to authenticate to connect this browser to your tailnet.";
+    "You need to authenticate to connect this browser to your Headscale network.";
 
   const loginBtn = document.createElement("button");
   loginBtn.className = "btn btn-primary btn-lg";

@@ -2,9 +2,9 @@
 
 :root {
   /* Brand colors */
-  --ts-blue: #4C78C6;
-  --ts-blue-hover: #3D65AF;
-  --ts-blue-light: #EBF0FA;
+  --ts-blue: #7C5CBF;
+  --ts-blue-hover: #6A4AAD;
+  --ts-blue-light: #F0EBF8;
   --ts-green: #34C759;
   --ts-green-light: #E8FAF0;
   --ts-red: #FF3B30;
@@ -58,7 +58,7 @@
   --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.04);
   --shadow-md: 0 2px 8px rgba(0, 0, 0, 0.06);
   --shadow-lg: 0 4px 16px rgba(0, 0, 0, 0.1);
-  --shadow-focus: 0 0 0 3px rgba(76, 120, 198, 0.25);
+  --shadow-focus: 0 0 0 3px rgba(124, 92, 191, 0.25);
 
   /* Transitions */
   --transition-fast: 120ms ease;
@@ -80,9 +80,9 @@
     --border: #38383A;
     --border-light: #48484A;
 
-    --ts-blue: #6B96E0;
-    --ts-blue-hover: #5A83CC;
-    --ts-blue-light: #1E2A40;
+    --ts-blue: #9B7FD4;
+    --ts-blue-hover: #8A6DC3;
+    --ts-blue-light: #2A1E40;
     --ts-green-light: #1A2E22;
     --ts-red-light: #2E1A1A;
     --ts-orange-light: #2E2418;
@@ -90,6 +90,6 @@
     --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.2);
     --shadow-md: 0 2px 8px rgba(0, 0, 0, 0.25);
     --shadow-lg: 0 4px 16px rgba(0, 0, 0, 0.3);
-    --shadow-focus: 0 0 0 3px rgba(107, 150, 224, 0.3);
+    --shadow-focus: 0 0 0 3px rgba(155, 127, 212, 0.3);
   }
 }

@@ -75,12 +75,12 @@ func main() {
 			installed++
 		}
 
-		fmt.Printf("\nYou can now close this terminal and use the Tailchrome extension.\n")
+		fmt.Printf("\nYou can now close this terminal and use the HeadChrome extension.\n")
 		os.Exit(0)
 	}
 
 	// Default: run as native messaging host (launched by browser).
-	hostinfo.SetApp("tailscale-browser-ext")
+	hostinfo.SetApp("headchrome-browser-ext")
 
 	h := newHost(os.Stdin, os.Stdout)
 

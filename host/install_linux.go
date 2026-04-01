@@ -18,7 +18,7 @@ func firefoxManifestDir() string {
 
 func binaryInstallDir() string {
 	home, _ := os.UserHomeDir()
-	return filepath.Join(home, ".local", "share", "tailscale", "browser-ext")
+	return filepath.Join(home, ".local", "share", "headchrome", "browser-ext")
 }
 
 // platformUninstall performs Linux-specific uninstall steps.

@@ -4,7 +4,7 @@ import { resolve } from "node:path";
 export default defineConfig({
   resolve: {
     alias: {
-      "@tailchrome/shared": resolve(__dirname, "../shared/src"),
+      "@headchrome/shared": resolve(__dirname, "../shared/src"),
     },
   },
   test: {

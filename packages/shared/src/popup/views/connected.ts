@@ -1,5 +1,4 @@
 import type { TailscaleState } from "../../types";
-import { ADMIN_URL } from "../../constants";
 import { renderHeader } from "../components/header";
 import { renderPeerList } from "../components/peer-list";
 import { renderHealthWarnings } from "../components/health-warnings";
@@ -8,6 +7,7 @@ import { sendMessage, enterSubView, leaveSubView, getLatestState } from "../popu
 import { createToggle } from "../components/toggle-switch";
 import { renderExitNodes } from "./exit-nodes";
 import { renderProfiles } from "./profiles";
+import { renderSettings } from "./settings";
 
 type SubViewRenderer = (root: HTMLElement, state: TailscaleState, onBack: () => void) => void;
 
@@ -55,7 +55,7 @@ export function renderConnected(root: HTMLElement, state: TailscaleState): void 
 
   const tailnetName = document.createElement("span");
   tailnetName.className = "status-bar-tailnet";
-  tailnetName.textContent = state.tailnet || "My Tailnet";
+  tailnetName.textContent = state.tailnet || "My Network";
   tailnetRow.appendChild(tailnetName);
 
   statusBar.appendChild(tailnetRow);
@@ -198,7 +198,7 @@ export function renderConnected(root: HTMLElement, state: TailscaleState): void 
   adminLink.href = "#";
   adminLink.addEventListener("click", (e) => {
     e.preventDefault();
-    chrome.tabs.create({ url: ADMIN_URL });
+    sendMessage({ type: "open-admin" });
   });
 
   const logoutLink = document.createElement("a");
@@ -222,7 +222,7 @@ export function renderConnected(root: HTMLElement, state: TailscaleState): void 
   settingsLink.href = "#";
   settingsLink.addEventListener("click", (e) => {
     e.preventDefault();
-    sendMessage({ type: "open-web-client" });
+    openSubView(root, renderSettings);
   });
 
   footer.appendChild(adminLink);

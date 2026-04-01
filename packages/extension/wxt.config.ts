@@ -15,7 +15,7 @@ interface ExtensionIds {
   firefoxNativeHostId: string;
 }
 
-interface TailchromeManifest extends UserManifest {
+interface HeadchromeManifest extends UserManifest {
   browser_specific_settings?: NonNullable<UserManifest["browser_specific_settings"]> & {
     gecko?: NonNullable<
       NonNullable<UserManifest["browser_specific_settings"]>["gecko"]
@@ -47,7 +47,7 @@ const extensionIcons = {
 };
 
 const extensionDescription =
-  "Access your tailnet from your browser. Run a full Tailscale node per browser profile without affecting system networking.";
+  "Access your Headscale network from your browser. Run a dedicated node per browser profile without affecting system networking.";
 
 export default defineConfig({
   srcDir: ".",
@@ -77,7 +77,7 @@ export default defineConfig({
   vite: () => ({
     resolve: {
       alias: {
-        "@tailchrome/shared": resolve(sharedDir, "src"),
+        "@headchrome/shared": resolve(sharedDir, "src"),
       },
     },
     server: {
@@ -87,8 +87,8 @@ export default defineConfig({
     },
   }),
   manifest: ({ browser }) => {
-    const manifest: TailchromeManifest = {
-      name: "Tailchrome",
+    const manifest: HeadchromeManifest = {
+      name: "HeadChrome",
       description: extensionDescription,
       host_permissions: ["<all_urls>"],
       permissions: [

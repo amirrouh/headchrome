@@ -8,9 +8,10 @@ const maxMessageSize = 1024 * 1024
 
 // Request represents a message from the browser extension to the host.
 type Request struct {
-	Cmd    string          `json:"cmd"`
-	InitID string          `json:"initID,omitempty"` // browser profile UUID, used with "init"
-	NodeID string          `json:"nodeID,omitempty"` // used with "set-exit-node", "send-file"
+	Cmd        string `json:"cmd"`
+	InitID     string `json:"initID,omitempty"`     // browser profile UUID, used with "init"
+	ControlURL string `json:"controlURL,omitempty"` // Headscale server URL
+	NodeID     string `json:"nodeID,omitempty"`     // used with "set-exit-node", "send-file"
 	Prefs  json.RawMessage `json:"prefs,omitempty"`  // partial prefs JSON, used with "set-prefs"
 
 	// For send-file

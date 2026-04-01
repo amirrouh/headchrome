@@ -37,7 +37,7 @@ describe("NativeHostConnection", () => {
     vi.useFakeTimers();
     mockPort = createMockPort();
     connectNativeSpy = vi.fn().mockReturnValue(mockPort.port);
-    storageGetSpy = vi.fn().mockResolvedValue({ profileId: "test-profile-id" });
+    storageGetSpy = vi.fn().mockResolvedValue({ profileId: "test-profile-id", headscaleServerUrl: "" });
     storageSetSpy = vi.fn().mockResolvedValue(undefined);
 
     chrome.runtime.connectNative = connectNativeSpy as unknown as typeof chrome.runtime.connectNative;
@@ -62,6 +62,7 @@ describe("NativeHostConnection", () => {
       expect(mockPort.port.postMessage).toHaveBeenCalledWith({
         cmd: "init",
         initID: "test-profile-id",
+        controlURL: "",
       });
     });
 

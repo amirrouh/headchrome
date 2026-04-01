@@ -1,8 +1,17 @@
-import { describe, it, expect } from "vitest";
-import { viewForState } from "./popup";
+import { describe, it, expect, beforeEach } from "vitest";
+import { viewForState, _setHeadscaleUrlConfigured } from "./popup";
 import { baseState } from "../__test__/fixtures";
 
 describe("viewForState", () => {
+  beforeEach(() => {
+    _setHeadscaleUrlConfigured(true);
+  });
+
+  it("returns 'needs-setup' when headscale URL is not configured", () => {
+    _setHeadscaleUrlConfigured(false);
+    expect(viewForState(baseState({ backendState: "Running" }))).toBe("needs-setup");
+  });
+
   it("returns 'connected' when backendState is Running", () => {
     expect(viewForState(baseState({ backendState: "Running" }))).toBe("connected");
   });

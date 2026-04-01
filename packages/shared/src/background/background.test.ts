@@ -84,7 +84,7 @@ describe("initBackground", () => {
       create: vi.fn(),
       onClicked: { addListener: vi.fn() },
     } as unknown as typeof chrome.contextMenus;
-    chrome.storage.local.get = vi.fn().mockResolvedValue({ profileId: "test-id" }) as unknown as typeof chrome.storage.local.get;
+    chrome.storage.local.get = vi.fn().mockResolvedValue({ profileId: "test-id", headscaleServerUrl: "https://headscale.example.com" }) as unknown as typeof chrome.storage.local.get;
     chrome.storage.local.set = vi.fn().mockResolvedValue(undefined) as unknown as typeof chrome.storage.local.set;
     chrome.storage.local.remove = vi.fn().mockResolvedValue(undefined) as unknown as typeof chrome.storage.local.remove;
     chrome.tabs.create = vi.fn().mockResolvedValue(undefined) as unknown as typeof chrome.tabs.create;
@@ -120,6 +120,7 @@ describe("initBackground", () => {
     expect(nativePort.postMessage).toHaveBeenCalledWith({
       cmd: "init",
       initID: "test-id",
+      controlURL: "https://headscale.example.com",
     });
   });
 
@@ -329,7 +330,7 @@ describe("initBackground", () => {
           magicDNSSuffix: "",
           selfNode: null,
           needsLogin: true,
-          browseToURL: "https://login.tailscale.com/auth/xyz",
+          browseToURL: "https://headscale.example.com/auth/xyz",
           exitNode: null,
           peers: [],
           prefs: null,
@@ -342,8 +343,11 @@ describe("initBackground", () => {
       connectListeners[0]!(popupPort);
       popupPort.onMessage._listeners[0]!({ type: "login" });
 
+      // login is async, let it resolve
+      await vi.advanceTimersByTimeAsync(0);
+
       expect(chrome.tabs.create).toHaveBeenCalledWith({
-        url: "https://login.tailscale.com/auth/xyz",
+        url: "https://headscale.example.com/auth/xyz",
       });
     });
 
@@ -372,6 +376,9 @@ describe("initBackground", () => {
       const popupPort = createPopupPort();
       connectListeners[0]!(popupPort);
       popupPort.onMessage._listeners[0]!({ type: "login" });
+
+      // login is async, let it resolve
+      await vi.advanceTimersByTimeAsync(0);
 
       expect(chrome.tabs.create).not.toHaveBeenCalled();
     });
@@ -485,20 +492,11 @@ describe("initBackground", () => {
       connectListeners[0]!(popupPort);
       popupPort.onMessage._listeners[0]!({ type: "open-admin" });
 
-      expect(chrome.tabs.create).toHaveBeenCalledWith({
-        url: "https://login.tailscale.com/admin",
-      });
-    });
-
-    it("handles open-web-client message", async () => {
-      await setupBackground();
-
-      const popupPort = createPopupPort();
-      connectListeners[0]!(popupPort);
-      popupPort.onMessage._listeners[0]!({ type: "open-web-client" });
+      // open-admin is async, let it resolve
+      await vi.advanceTimersByTimeAsync(0);
 
       expect(chrome.tabs.create).toHaveBeenCalledWith({
-        url: "http://100.100.100.100",
+        url: "https://headscale.example.com/admin",
       });
     });
 

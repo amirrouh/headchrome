@@ -11,7 +11,7 @@ export type BackendState =
 // === Native Messaging Protocol ===
 
 export type NativeRequest =
-  | { cmd: "init"; initID: string }
+  | { cmd: "init"; initID: string; controlURL: string }
   | { cmd: "up" }
   | { cmd: "down" }
   | { cmd: "get-status" }
@@ -187,7 +187,8 @@ export type BackgroundMessage =
   | { type: "send-file"; targetNodeID: string; name: string; size: number; dataBase64: string }
   | { type: "suggest-exit-node" }
   | { type: "open-admin" }
-  | { type: "open-web-client" };
+  | { type: "open-settings" }
+  | { type: "save-headscale-url"; url: string };
 
 // === Proxy manager interface ===
 

@@ -1,5 +1,5 @@
-import type { TailscaleState } from "@tailchrome/shared/types";
-import { TAILSCALE_SERVICE_IP } from "@tailchrome/shared/constants";
+import type { TailscaleState } from "@headchrome/shared/types";
+import { TAILSCALE_SERVICE_IP } from "@headchrome/shared/constants";
 import {
   parseCIDR,
   ipToNum,
@@ -8,7 +8,7 @@ import {
   shouldProxyState,
   CGNAT_NETWORK,
   CGNAT_MASK,
-} from "@tailchrome/shared/background/proxy-utils";
+} from "@headchrome/shared/background/proxy-utils";
 
 export interface FirefoxProxyInfo {
   type: "socks" | "direct";

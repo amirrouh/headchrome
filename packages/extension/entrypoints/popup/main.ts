@@ -1,1 +1,1 @@
-import "@tailchrome/shared/popup/popup";
+import "@headchrome/shared/popup/popup";

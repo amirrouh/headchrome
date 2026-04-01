@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it } from "vitest";
-import { baseState, makePeer } from "@tailchrome/shared/__test__/fixtures";
+import { baseState, makePeer } from "@headchrome/shared/__test__/fixtures";
 import { resetSessionStorage } from "../__test__/browser-mock";
 import { FirefoxProxyManager } from "./firefox-proxy-manager";
 

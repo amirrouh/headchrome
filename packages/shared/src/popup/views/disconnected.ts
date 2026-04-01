@@ -22,11 +22,11 @@ export function renderDisconnected(root: HTMLElement): void {
 
   const title = document.createElement("h2");
   title.className = "centered-view-title";
-  title.textContent = "Tailscale is not connected";
+  title.textContent = "Headscale is not connected";
 
   const subtitle = document.createElement("p");
   subtitle.className = "centered-view-text";
-  subtitle.textContent = "Toggle the switch to connect to your tailnet.";
+  subtitle.textContent = "Toggle the switch to connect to your network.";
 
   content.appendChild(icon);
   content.appendChild(title);

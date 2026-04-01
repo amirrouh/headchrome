@@ -2,7 +2,7 @@ import { createToggle } from "./toggle-switch";
 import { sendMessage } from "../popup";
 
 /**
- * Creates the Tailscale dot-grid logo icon as DOM elements.
+ * Creates the HeadChrome hexagonal "H" logo icon as DOM elements.
  */
 function createLogoIcon(): HTMLElement {
   const ns = "http://www.w3.org/2000/svg";
@@ -12,30 +12,24 @@ function createLogoIcon(): HTMLElement {
   svg.setAttribute("width", "20");
   svg.setAttribute("height", "20");
 
-  // 3x3 grid of circles representing the Tailscale logo
-  const dots: Array<{ cx: number; cy: number; opacity: number }> = [
-    { cx: 4, cy: 4, opacity: 0.2 },
-    { cx: 4, cy: 10, opacity: 1 },
-    { cx: 4, cy: 16, opacity: 0.2 },
-    { cx: 10, cy: 4, opacity: 1 },
-    { cx: 10, cy: 10, opacity: 1 },
-    { cx: 10, cy: 16, opacity: 1 },
-    { cx: 16, cy: 4, opacity: 0.2 },
-    { cx: 16, cy: 10, opacity: 1 },
-    { cx: 16, cy: 16, opacity: 0.2 },
-  ];
+  // Hexagonal background
+  const hex = document.createElementNS(ns, "path");
+  hex.setAttribute("d", "M10 1L18.66 5.5V14.5L10 19L1.34 14.5V5.5L10 1Z");
+  hex.setAttribute("fill", "currentColor");
+  hex.setAttribute("opacity", "0.15");
+  svg.appendChild(hex);
 
-  for (const dot of dots) {
-    const circle = document.createElementNS(ns, "circle");
-    circle.setAttribute("cx", String(dot.cx));
-    circle.setAttribute("cy", String(dot.cy));
-    circle.setAttribute("r", "3.5");
-    circle.setAttribute("fill", "currentColor");
-    if (dot.opacity < 1) {
-      circle.setAttribute("opacity", String(dot.opacity));
-    }
-    svg.appendChild(circle);
-  }
+  // Letter H
+  const h = document.createElementNS(ns, "text");
+  h.setAttribute("x", "10");
+  h.setAttribute("y", "14.5");
+  h.setAttribute("text-anchor", "middle");
+  h.setAttribute("font-size", "12");
+  h.setAttribute("font-weight", "700");
+  h.setAttribute("font-family", "-apple-system, sans-serif");
+  h.setAttribute("fill", "currentColor");
+  h.textContent = "H";
+  svg.appendChild(h);
 
   const wrapper = document.createElement("span");
   wrapper.appendChild(svg);
@@ -59,7 +53,7 @@ export function renderHeader(
 
   const wordmark = document.createElement("span");
   wordmark.className = "header-wordmark";
-  wordmark.textContent = "Tailchrome";
+  wordmark.textContent = "HeadChrome";
   logo.appendChild(wordmark);
 
   const toggle = createToggle(connected, () => {

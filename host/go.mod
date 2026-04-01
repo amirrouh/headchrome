@@ -1,4 +1,4 @@
-module github.com/dantraynor/tailchrome/host
+module github.com/dantraynor/headchrome/host
 
 go 1.25.5
 

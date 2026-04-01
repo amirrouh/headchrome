@@ -49,8 +49,9 @@ export class NativeHostConnection {
       this.handleDisconnect(disconnectedPort);
     });
 
-    // Send init message with profile ID
-    this.send({ cmd: "init", initID: this.profileID });
+    // Send init message with profile ID and control URL
+    const controlURL = await this.getControlURL();
+    this.send({ cmd: "init", initID: this.profileID, controlURL });
   }
 
   disconnect(): void {
@@ -147,6 +148,11 @@ export class NativeHostConnection {
         this.backoffAndReconnect();
       });
     }, delay);
+  }
+
+  private async getControlURL(): Promise<string> {
+    const result = await chrome.storage.local.get("headscaleServerUrl");
+    return (result["headscaleServerUrl"] as string) || "";
   }
 
   private async getOrCreateProfileID(): Promise<string> {
