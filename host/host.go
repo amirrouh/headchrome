@@ -174,6 +174,14 @@ func (h *Host) handleInit(req Request) {
 		return
 	}
 
+	if req.ControlURL == "" {
+		h.send(Reply{
+			Cmd:  "init",
+			Init: &InitReply{Error: "controlURL is required (your Headscale server URL)"},
+		})
+		return
+	}
+
 	// If already initialized with the same ID, reuse.
 	if h.ts != nil && h.initID == req.InitID {
 		h.send(Reply{
@@ -205,7 +213,7 @@ func (h *Host) handleInit(req Request) {
 		return
 	}
 
-	stateDir := filepath.Join(homeDir, ".config", "tailscale-browser-ext", req.InitID)
+	stateDir := filepath.Join(homeDir, ".config", "headchrome-browser-ext", req.InitID)
 	if err := os.MkdirAll(stateDir, 0700); err != nil {
 		h.send(Reply{
 			Cmd:  "init",
@@ -217,6 +225,7 @@ func (h *Host) handleInit(req Request) {
 	h.ts = &tsnet.Server{
 		Dir:          stateDir,
 		Hostname:     "browser-ext",
+		ControlURL:   req.ControlURL,
 		RunWebClient: true,
 		Logf:         log.Printf,
 	}

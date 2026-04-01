@@ -10,14 +10,14 @@ import (
 )
 
 // manifestName is the name used for the native messaging host registration.
-const manifestNameChrome = "com.tailscale.browserext.chrome"
-const manifestNameFirefox = "com.tailscale.browserext.firefox"
+const manifestNameChrome = "com.headchrome.browserext.chrome"
+const manifestNameFirefox = "com.headchrome.browserext.firefox"
 
 // chromeWebStoreExtensionID is the stable extension ID assigned by the Chrome Web Store.
 const chromeWebStoreExtensionID = "bhfeceecialgilpedkoflminjgcjljll"
 
 // firefoxExtensionID is the gecko addon ID for the Firefox extension.
-const firefoxExtensionID = "tailchrome@tesseras.org"
+const firefoxExtensionID = "headchrome@tesseras.org"
 
 // chromeManifest is the native messaging host manifest for Chrome.
 type nativeManifest struct {
@@ -63,7 +63,7 @@ func installChrome(extensionID string) error {
 
 	manifest := nativeManifest{
 		Name:        manifestNameChrome,
-		Description: "Tailscale Browser Extension Native Messaging Host",
+		Description: "Headscale Browser Extension Native Messaging Host",
 		Path:        binPath,
 		Type:        "stdio",
 		AllowedOrigins: []string{
@@ -92,7 +92,7 @@ func installFirefox(extensionID string) error {
 
 	manifest := nativeManifest{
 		Name:        manifestNameFirefox,
-		Description: "Tailscale Browser Extension Native Messaging Host",
+		Description: "Headscale Browser Extension Native Messaging Host",
 		Path:        binPath,
 		Type:        "stdio",
 		AllowedExtensions: []string{
@@ -150,7 +150,7 @@ func installBinary() (string, error) {
 		return "", fmt.Errorf("failed to create install dir: %w", err)
 	}
 
-	binaryName := "tailscale-browser-ext"
+	binaryName := "headchrome-host"
 	if runtime.GOOS == "windows" {
 		binaryName += ".exe"
 	}

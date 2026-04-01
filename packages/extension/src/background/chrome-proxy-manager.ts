@@ -1,11 +1,11 @@
-import type { TailscaleState } from "@tailchrome/shared/types";
-import { TAILSCALE_SERVICE_IP } from "@tailchrome/shared/constants";
+import type { TailscaleState } from "@headchrome/shared/types";
+import { TAILSCALE_SERVICE_IP } from "@headchrome/shared/constants";
 import {
   parseCIDR,
   sanitizeMagicDNSSuffix,
   collectSubnetCIDRs,
   shouldProxyState,
-} from "@tailchrome/shared/background/proxy-utils";
+} from "@headchrome/shared/background/proxy-utils";
 
 export class ChromeProxyManager {
   private currentlyEnabled = false;

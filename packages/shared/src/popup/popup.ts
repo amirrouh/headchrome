@@ -3,12 +3,21 @@ import { renderConnected } from "./views/connected";
 import { renderDisconnected } from "./views/disconnected";
 import { renderNeedsLogin } from "./views/needs-login";
 import { renderNeedsInstall } from "./views/needs-install";
+import { renderNeedsSetup } from "./views/needs-setup";
 import { showToast } from "./utils";
 import { loadCustomUrls } from "./custom-urls";
+import { HEADSCALE_URL_STORAGE_KEY } from "../constants";
 
 // --- Port management ---
 
 let port: chrome.runtime.Port | null = null;
+
+let headscaleUrlConfigured = false;
+
+/** @internal Exposed for testing only. */
+export function _setHeadscaleUrlConfigured(value: boolean): void {
+  headscaleUrlConfigured = value;
+}
 
 /**
  * Send a message to the background service worker.
@@ -77,6 +86,7 @@ export function getLatestState(): TailscaleState | null {
  * Determines the view name for a given state.
  */
 export function viewForState(state: TailscaleState): string {
+  if (!headscaleUrlConfigured) return "needs-setup";
   if (state.installError) return "needs-install";
   if (state.backendState === "NeedsLogin") return "needs-login";
   if (state.backendState === "Running") return "connected";
@@ -117,6 +127,9 @@ function render(state: TailscaleState): void {
   lastStateSnapshot = snapshot;
 
   switch (view) {
+    case "needs-setup":
+      renderNeedsSetup(root);
+      break;
     case "needs-install":
       renderNeedsInstall(root);
       break;
@@ -142,6 +155,20 @@ async function init(): Promise<void> {
 
   // Load per-device custom URL settings before rendering peer list
   await loadCustomUrls();
+
+  const urlResult = await chrome.storage.local.get(HEADSCALE_URL_STORAGE_KEY);
+  headscaleUrlConfigured = !!(urlResult[HEADSCALE_URL_STORAGE_KEY] as string);
+
+  chrome.storage.onChanged.addListener((changes) => {
+    if (changes[HEADSCALE_URL_STORAGE_KEY]) {
+      headscaleUrlConfigured = !!changes[HEADSCALE_URL_STORAGE_KEY].newValue;
+      if (headscaleUrlConfigured && lastKnownState) {
+        currentView = null;
+        lastStateSnapshot = null;
+        render(lastKnownState);
+      }
+    }
+  });
 
   // Connect to the background service worker
   port = chrome.runtime.connect({ name: "popup" });

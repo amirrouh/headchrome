@@ -4,7 +4,7 @@
     "noUncheckedIndexedAccess": true,
     "types": ["chrome"],
     "paths": {
-      "@tailchrome/shared/*": ["../shared/src/*"]
+      "@headchrome/shared/*": ["../shared/src/*"]
     }
   }
 }

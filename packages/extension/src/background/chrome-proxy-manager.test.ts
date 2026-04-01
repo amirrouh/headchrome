@@ -1,6 +1,6 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import { baseState, makePeer } from "@tailchrome/shared/__test__/fixtures";
-import type { TailscaleState } from "@tailchrome/shared/types";
+import { baseState, makePeer } from "@headchrome/shared/__test__/fixtures";
+import type { TailscaleState } from "@headchrome/shared/types";
 import { ChromeProxyManager } from "./chrome-proxy-manager";
 
 function capturePAC(pm: ChromeProxyManager, state: TailscaleState): string | null {

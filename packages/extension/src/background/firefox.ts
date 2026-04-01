@@ -1,7 +1,7 @@
 import {
   initBackground,
   type BackgroundHandle,
-} from "@tailchrome/shared/background/background";
+} from "@headchrome/shared/background/background";
 import { FIREFOX_NATIVE_HOST_ID } from "../constants";
 import { FirefoxProxyManager } from "./firefox-proxy-manager";
 

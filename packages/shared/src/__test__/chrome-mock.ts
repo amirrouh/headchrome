@@ -61,6 +61,9 @@ const chromeMock = {
       set: (_items: Record<string, unknown>) => Promise.resolve(),
       remove: (_key: string) => Promise.resolve(),
     },
+    onChanged: {
+      addListener: (_fn: (changes: unknown) => void) => {},
+    },
   },
   tabs: {
     create: (_opts: unknown) => Promise.resolve(),

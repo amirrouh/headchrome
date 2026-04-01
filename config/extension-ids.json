@@ -1,6 +1,6 @@
 {
   "chromeExtensionId": "bhfeceecialgilpedkoflminjgcjljll",
-  "firefoxAddonId": "tailchrome@tesseras.org",
-  "chromeNativeHostId": "com.tailscale.browserext.chrome",
-  "firefoxNativeHostId": "com.tailscale.browserext.firefox"
+  "firefoxAddonId": "headchrome@tesseras.org",
+  "chromeNativeHostId": "com.headchrome.browserext.chrome",
+  "firefoxNativeHostId": "com.headchrome.browserext.firefox"
 }

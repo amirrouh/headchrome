@@ -5,7 +5,7 @@ import type {
   PopupMessage,
   ProxyManager,
 } from "../types";
-import { KEEPALIVE_INTERVAL_MS, ADMIN_URL, TAILSCALE_SERVICE_IP } from "../constants";
+import { KEEPALIVE_INTERVAL_MS, HEADSCALE_URL_STORAGE_KEY } from "../constants";
 import { StateStore } from "./state-store";
 import { NativeHostConnection } from "./native-host";
 import { BadgeManager } from "./badge-manager";
@@ -36,17 +36,16 @@ export interface InitBackgroundOptions {
 // URL validation
 // ---------------------------------------------------------------------------
 
-const ALLOWED_LOGIN_ORIGINS = [
-  "https://login.tailscale.com",
-  "https://controlplane.tailscale.com",
-];
+async function getHeadscaleUrl(): Promise<string | null> {
+  const result = await chrome.storage.local.get(HEADSCALE_URL_STORAGE_KEY);
+  return (result[HEADSCALE_URL_STORAGE_KEY] as string) || null;
+}
 
-function isValidLoginURL(url: string): boolean {
+function isValidLoginURL(url: string, headscaleUrl: string): boolean {
   try {
     const parsed = new URL(url);
-    return ALLOWED_LOGIN_ORIGINS.some(
-      (origin) => parsed.origin === origin
-    );
+    const allowed = new URL(headscaleUrl);
+    return parsed.origin === allowed.origin;
   } catch {
     return false;
   }
@@ -300,7 +299,7 @@ export function initBackground(
   // Handle popup messages
   // ---------------------------------------------------------------------------
 
-  function handlePopupMessage(msg: BackgroundMessage): void {
+  async function handlePopupMessage(msg: BackgroundMessage): Promise<void> {
     const state = store.getState();
 
     switch (msg.type) {
@@ -317,7 +316,8 @@ export function initBackground(
       }
 
       case "login": {
-        if (state.browseToURL && isValidLoginURL(state.browseToURL)) {
+        const headscaleUrl = await getHeadscaleUrl();
+        if (state.browseToURL && headscaleUrl && isValidLoginURL(state.browseToURL, headscaleUrl)) {
           chrome.tabs.create({ url: state.browseToURL });
         }
         break;
@@ -329,12 +329,18 @@ export function initBackground(
       }
 
       case "open-admin": {
-        chrome.tabs.create({ url: ADMIN_URL });
+        const headscaleUrl = await getHeadscaleUrl();
+        if (headscaleUrl) {
+          chrome.tabs.create({ url: `${headscaleUrl}/admin` });
+        }
         break;
       }
 
-      case "open-web-client": {
-        chrome.tabs.create({ url: `http://${TAILSCALE_SERVICE_IP}` });
+      case "save-headscale-url": {
+        await chrome.storage.local.set({ [HEADSCALE_URL_STORAGE_KEY]: msg.url });
+        // Reconnect with new URL
+        nativeHost.disconnect();
+        await nativeHost.connect();
         break;
       }
 
@@ -392,6 +398,11 @@ export function initBackground(
         break;
       }
 
+      case "open-settings": {
+        chrome.runtime.openOptionsPage?.();
+        break;
+      }
+
       default: {
         // Exhaustiveness check: TypeScript will error if a case is missing
         const _exhaustive: never = msg;
@@ -418,14 +429,14 @@ export function initBackground(
 
   chrome.runtime.onInstalled?.addListener(() => {
     chrome.contextMenus.create({
-      id: "tailscale-send-page",
-      title: "Send page URL to Tailscale device",
+      id: "headchrome-send-page",
+      title: "Send page URL to Headscale device",
       contexts: ["page"],
     });
   });
 
   chrome.contextMenus.onClicked.addListener((info) => {
-    if (info.menuItemId !== "tailscale-send-page") return;
+    if (info.menuItemId !== "headchrome-send-page") return;
 
     const state = store.getState();
     if (state.backendState !== "Running") return;

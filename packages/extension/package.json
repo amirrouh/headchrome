@@ -1,5 +1,5 @@
 {
-  "name": "@tailchrome/extension",
+  "name": "@headchrome/extension",
   "version": "0.1.5",
   "private": true,
   "type": "module",
@@ -19,7 +19,7 @@
     "postinstall": "wxt prepare"
   },
   "dependencies": {
-    "@tailchrome/shared": "workspace:*"
+    "@headchrome/shared": "workspace:*"
   },
   "devDependencies": {
     "@types/chrome": "^0.0.300",

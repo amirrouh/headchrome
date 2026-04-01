@@ -83,7 +83,7 @@ export function renderExitNodes(
 
     const emptyText = document.createElement("div");
     emptyText.className = "empty-state-text";
-    emptyText.textContent = "To use an exit node, enable it on a device in your tailnet via the admin console or run \"tailscale set --advertise-exit-node\" on the device.";
+    emptyText.textContent = "To use an exit node, enable it on a device in your network via the admin console or run \"tailscale set --advertise-exit-node\" on the device.";
     emptyState.appendChild(emptyText);
 
     view.appendChild(emptyState);
