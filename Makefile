@@ -14,13 +14,13 @@ extension-firefox:
 	pnpm build:firefox
 
 host:
-	cd host && CGO_ENABLED=0 go build $(LDFLAGS) -o ../dist/tailscale-browser-ext .
+	cd host && CGO_ENABLED=0 go build $(LDFLAGS) -o ../dist/headchrome-host .
 
 host-all:
-	cd host && GOOS=darwin  GOARCH=amd64 CGO_ENABLED=0 go build $(LDFLAGS) -o ../dist/tailscale-browser-ext-darwin-amd64 .
-	cd host && GOOS=darwin  GOARCH=arm64 CGO_ENABLED=0 go build $(LDFLAGS) -o ../dist/tailscale-browser-ext-darwin-arm64 .
-	cd host && GOOS=linux   GOARCH=amd64 CGO_ENABLED=0 go build $(LDFLAGS) -o ../dist/tailscale-browser-ext-linux-amd64 .
-	cd host && GOOS=windows GOARCH=amd64 CGO_ENABLED=0 go build $(LDFLAGS) -o ../dist/tailscale-browser-ext-windows-amd64.exe .
+	cd host && GOOS=darwin  GOARCH=amd64 CGO_ENABLED=0 go build $(LDFLAGS) -o ../dist/headchrome-host-darwin-amd64 .
+	cd host && GOOS=darwin  GOARCH=arm64 CGO_ENABLED=0 go build $(LDFLAGS) -o ../dist/headchrome-host-darwin-arm64 .
+	cd host && GOOS=linux   GOARCH=amd64 CGO_ENABLED=0 go build $(LDFLAGS) -o ../dist/headchrome-host-linux-amd64 .
+	cd host && GOOS=windows GOARCH=amd64 CGO_ENABLED=0 go build $(LDFLAGS) -o ../dist/headchrome-host-windows-amd64.exe .
 
 zip: zip-chrome zip-firefox
 
@@ -34,4 +34,4 @@ clean:
 	pnpm clean
 
 dev:
-	pnpm --filter @tailchrome/extension dev
+	pnpm --filter @headchrome/extension dev
